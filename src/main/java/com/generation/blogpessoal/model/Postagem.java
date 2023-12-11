@@ -17,26 +17,25 @@ import jakarta.validation.constraints.Size;
 @Table(name = "tb_postagens") // CREATE TABLE tb_postagens
 
 public class Postagem {
-	
-	@Id //indica que o Id é a chave primária
-	@GeneratedValue(strategy = GenerationType.IDENTITY)//Define o auto incremento
+
+	@Id // indica que o Id é a chave primária
+	@GeneratedValue(strategy = GenerationType.IDENTITY) // Define o auto incremento
 	private Long id;
-	
+
 	@Column(length = 100)
-	@NotBlank(message = "O campo título é obrigatório!") //Não permite que o usuário não preencha o campo
+	@NotBlank(message = "O campo título é obrigatório!") // Não permite que o usuário não preencha o campo
 	@Size(min = 5, max = 100, message = "O campo título deve conter no mínimo 5 e no máximo 100 caractéres.")
 	private String titulo;
 
 	@Column(length = 1000)
-	@NotBlank(message = "O campo de texto é de preenchimento obrigatório!") //Não permite que o usuário não preencha o campo
+	@NotBlank(message = "O campo de texto é de preenchimento obrigatório!") // Não permite que o usuário não preencha o
+																			// campo
 	@Size(min = 10, max = 1000, message = "O campo texto deve conter no mínimo 5 e no máximo 100 caractéres.")
 	private String texto;
-	
-	
-	@UpdateTimestamp //atualiza a data e a hora de postagem e atualização da postagem
+
+	@UpdateTimestamp // atualiza a data e a hora de postagem e atualização da postagem
 	private LocalDateTime data;
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -68,6 +67,5 @@ public class Postagem {
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
-	
-	
+
 }
