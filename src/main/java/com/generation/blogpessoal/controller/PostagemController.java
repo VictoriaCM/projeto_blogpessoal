@@ -60,7 +60,8 @@ public class PostagemController {
 	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem) {
 		return postagemRepository.findById(postagem.getId()) 				
 		//Checa se o Id existe antes da atualização
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem)))
+				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
+						.body(postagemRepository.save(postagem)))
 				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 		
 		// UPDATE tb_postagens SET titulo = ?, texto = ? WHERE id = ?;
