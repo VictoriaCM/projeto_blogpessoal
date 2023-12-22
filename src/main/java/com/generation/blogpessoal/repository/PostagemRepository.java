@@ -10,7 +10,7 @@ import com.generation.blogpessoal.model.Postagem;
 //long é o atributo da Pk Id
 public interface PostagemRepository extends JpaRepository<Postagem, Long> {
 
-	
-	//Método para fazer a busca textual pela postagem (SELECT * FROM t_postagens WHERE LIKE "%TEXTO%");
-	List<Postagem> findAllByTituloContainingIgnoreCase(@Param ("titulo")String titulo);
+	// Método para fazer a busca textual pela postagem (SELECT * FROM t_postagens
+	// WHERE LIKE "%TEXTO%");
+	List<Postagem> findAllByTituloContainingIgnoreCase(@Param("titulo") String titulo);
 }

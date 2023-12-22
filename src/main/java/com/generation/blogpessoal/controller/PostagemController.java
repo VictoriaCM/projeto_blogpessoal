@@ -20,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 
 import jakarta.validation.Valid;
 
@@ -32,6 +33,10 @@ public class PostagemController {
 	@Autowired
 	private PostagemRepository postagemRepository;
 
+	@Autowired
+	private TemaRepository temaRepository;
+	
+	
 	// Trazer todas as postagens da tabela
 	@GetMapping
 	public ResponseEntity<List<Postagem>> getAll() {
@@ -57,23 +62,25 @@ public class PostagemController {
 	}
 
 	@PutMapping
-	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem) {
-		return postagemRepository.findById(postagem.getId()) 				
-		//Checa se o Id existe antes da atualização
-				.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-						.body(postagemRepository.save(postagem)))
-				.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-		
-		// UPDATE tb_postagens SET titulo = ?, texto = ? WHERE id = ?;
+    public ResponseEntity<Postagem> update(@Valid @RequestBody Postagem postagem) {
 
-	}
+        if (postagemRepository.existsById(postagem.getId())) {
+            if (temaRepository.existsById(postagem.getTema().getId())) {
+                return ResponseEntity.status(HttpStatus.OK).body(postagemRepository.save(postagem));
+            }
+            
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Tema inexistente!", null);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		Optional<Postagem> postagem = postagemRepository.findById(id);
-		//Checa se o Id existe antes da exclusão
-		if (postagem.isEmpty()) 											
+		// Checa se o Id existe antes da exclusão
+		if (postagem.isEmpty())
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
 		postagemRepository.deleteById(id);
